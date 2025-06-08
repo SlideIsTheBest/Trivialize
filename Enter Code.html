@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trivialize | Enter Code</title>
+  <style>
+    @font-face {
+      font-family: "Gontserrat";
+      src: url("Gontserrat-Regular.ttf");
+      font-weight: normal;
+    }
+
+    body {
+      background-color: darkslateblue;
+      transition: background-color 1s ease;
+      overflow: hidden;
+    }
+
+    form {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      gap: 15px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    input[type="text"] {
+      width: 20vw;
+      height: 5vh;
+      padding: 10px;
+      font-family: "Gontserrat", sans-serif;
+      font-size: 20px;
+      text-align: center;
+      border: 3px solid #ccc;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    input[type="text"]:focus {
+      border-color: #228dff;
+    }
+
+    input[type="submit"] {
+      width: 22vw;
+      height: 7.5vh;
+      padding: 10px;
+      background-color: white;
+      font-family: "Gontserrat", sans-serif;
+      font-size: 20px;
+      text-align: center;
+      border: 3px solid #ccc;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <form action="Quiz.html" method="get">
+    <input type="text" name="code" autocomplete="off" placeholder="Quiz Code">
+    <input type="submit" value="Submit">
+  </form>
+</body>

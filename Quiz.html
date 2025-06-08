@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    var correctcolor = "#00e34c";
+    var wrongcolor = "#ff401f";
+
+    const params = new URLSearchParams(window.location.search);
+    const quizcode = params.get("code");
+
+    document.title = "Trivialize | Code " + quizcode;
+  </script>
+  <style>
+    @font-face {
+      font-family: "Gontserrat";
+      src: url("Gontserrat-Regular.ttf");
+      font-weight: normal;
+    }
+
+    body {
+      background-color: darkslateblue;
+      transition: background-color 1s ease;
+      overflow: hidden;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    .start {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .start button {
+      width: 20vw;
+      height: 12.5vh;
+      background-color: white;
+      font-family: "Gontserrat", sans-serif;
+      font-size: 30px;
+      border-radius: 10px;
+      border: 3px solid #ccc;
+      cursor: pointer;
+    }
+
+    #question {
+      white-space: pre-line;
+    }
+
+    .answerbuttons {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      height: 40vh;
+      display: flex;
+      padding: 10px;
+      box-sizing: border-box;
+      gap: 10px;
+      justify-content: space-around;
+    }
+
+    .answerbuttons button {
+      flex: 1;
+      font-family: "Gontserrat", sans-serif;
+      border-radius: 10px;
+      border: 0px;
+      font-size: 30px;
+      transition: background-color 0.5s ease, transform 0.1s;
+      cursor: pointer;
+    }
+
+    .answerbuttons button:disabled {
+      background-color: #bababa;
+      color: black;
+      opacity: 1;
+      cursor: not-allowed;
+    }
+
+    .answerbuttons button:active {
+      transform: scale(0.95);
+    }
+
+    .answerbuttons button:disabled:active {
+      transform: none;
+    }
+
+    .red {
+      background-color: #ff8147;
+    }
+
+    .yellow {
+      background-color: #ebd334;
+    }
+
+    .green {
+      background-color: #34eb89;
+    }
+
+    .blue {
+      background-color: #34cdeb;
+    }
+
+    .pink {
+      background-color: #f268eb;
+    }
+
+    #question {
+      position: absolute;
+      top: 15vh;
+      left: 10vw;
+      width: 80vw;
+      height: 30vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-family: "Gontserrat", sans-serif;
+      font-size: 40px;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div id="start">
+    <div class="start">
+      <button id="start" onclick="start()">Start</button>
+    </div>
+  </div>
+
+  <div id="questionscreen" class="hide">
+    <div id="question">Question</div>
+    <div class="answerbuttons">
+      <button class="red">Button</button>
+      <button class="yellow">Button</button>
+      <button class="green">Button</button>
+      <button class="blue">Button</button>
+    </div>
+  </div>
+
+  <script>
+    let quizdata;
+    let quickmode;
+    let shuffle;
+    let delayed = true;
+
+    fetch("Database.json")
+    .then(response => response.json())
+    .then(data => {
+      quizdata = data[quizcode].questions;
+      quickmode = data[quizcode].quickmode;
+      shuffle = data[quizcode].shuffle;
+
+      if (quickmode === true) {delayed = false};
+    })
+    .catch(error => {
+      window.location.href = "Enter Code.html"
+    })
+
+    let curquestion = 0;
+    let correctans = 0;
+    let startScr = document.getElementById("start");
+    let startBtn = document.querySelector(".start button");
+    let questionScr = document.getElementById("questionscreen");
+    let questionEl = document.getElementById("question");
+    let buttonsEl = document.querySelector(".answerbuttons");
+
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function start() {
+      startScr.classList.add("hide");
+      document.body.style.backgroundColor = "black";
+      if (delayed){
+        await delay(500)
+      }
+      document.body.style.backgroundColor = "darkslateblue";
+      questionScr.classList.remove("hide");
+      showquestion(0);
+    }
+
+    function doshuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    let correctbtn;
+
+    function showquestion(index) {
+      const entry = quizdata[index];
+      const questiontext = entry[0];
+      const answerkey = entry[1]
+      const rawoptions = entry.slice(2, 7);
+
+      let options = rawoptions.map((value, i) => ({
+        value: value,
+        iscorrect: i === answerkey-1
+      }))
+      
+      questionEl.textContent = questiontext;
+      buttonsEl.innerHTML = "";
+
+      let btnNum = 0
+      let colors = ['red', 'yellow', 'green', 'blue', 'pink']
+      let valuecheck = []
+
+      if (options.length === 2) {
+        options.forEach((opt, i) => {
+          if (["true", "correct", "right"].includes(opt.value.toLowerCase())) {
+            options.unshift(options.splice(i, 1)[0]);
+            valuecheck.unshift(opt.value);
+          } else if (["false", "incorrect", "wrong"].includes(opt.value.toLowerCase())) {
+            valuecheck.push(opt.value);
+          };
+        });
+      } else if (shuffle) {
+        doshuffle(options);
+      }
+
+      options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.textContent = opt.value;
+        if (valuecheck.length === 2 && options.length === 2) {
+          if (["true", "correct"].includes(opt.value.toLowerCase())) {
+            btn.classList.add("green")
+          } else {
+            btn.classList.add("red")
+          }
+        } else {
+          btn.classList.add(colors[btnNum])
+        }
+
+        if (opt.iscorrect) {
+          correctbtn = btn
+        }
+
+        btn.onclick = () => answer(btn);
+        buttonsEl.appendChild(btn);
+
+        btnNum++
+      });
+    }
+
+    async function answer(btn) {
+      let allbtns = document.querySelectorAll(".answerbuttons button")
+      allbtns.forEach(btn => btn.disabled = true)
+      
+      if (btn === correctbtn) {
+        btn.style.backgroundColor = correctcolor;
+        correctans++
+        if (delayed) {
+          await delay(1500)
+        }
+      } else {
+        btn.style.backgroundColor = wrongcolor;
+        if (delayed) {
+          await delay(1000)
+        }
+        correctbtn.style.backgroundColor = correctcolor;
+        if (delayed) {
+          await delay(500)
+        }
+        await delay(1000)
+      }
+
+      await delay(500)
+      questionScr.classList.add("hide")
+      document.body.style.backgroundColor = "black";
+
+      if (delayed) {
+        await delay(500)
+      }
+      await delay(500)
+      questionScr.classList.remove("hide")
+      curquestion++;
+      if (curquestion < quizdata.length) {
+        document.body.style.backgroundColor = "darkslateblue";
+        showquestion(curquestion);
+      } else {
+        document.body.style.backgroundColor = "darkslateblue";
+        questionEl.innerHTML = "Quiz complete!<br><br>Correct answers : "+ correctans + "/" + quizdata.length;
+        buttonsEl.innerHTML = "";
+      }
+    }
+  </script>
+</body>
+</html>

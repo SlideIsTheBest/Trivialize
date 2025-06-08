@@ -1,0 +1,21 @@
+{
+    "TEST01":{
+        "quickmode":false,
+        "shuffle":false,
+        "questions":[
+            ["Question 1?", 4, "Option 1", "Option 2", "Option 3", "Answer", "Option 4"],
+            ["Question 2?", 1, "True", "False"],
+            ["Question 3?", 2, "Incorrect", "Correct"],
+            ["Question 4?", 1, "True", "False", "I don't know"]
+    ]},
+
+    "000001":{
+        "quickmode":true,
+        "shuffle":true,
+        "questions":[
+            ["What programming language does Trivialize use?", 4,"HTML", "CSS", "JavaScript", "All of them"],
+            ["Who created Trivialize?", 4, "Afif", "Berk", "Lam", "Slide", "Zack"],
+            ["What was Trivialize first called as?", 2, "TriviaSlide", "QuizSlide", "QuizTime!", "Triviable"],
+            ["(True or False)\nSlide's birthday is on March 14th.", 2, "True", "False"]
+    ]}
+}
