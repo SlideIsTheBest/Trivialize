@@ -25,7 +25,7 @@
         "questions":[
             ["What programming language does Trivialize (this website) use?", 4,"HTML", "CSS", "JavaScript", "All of them"],
             ["Who made Trivialize?", 3, "AI", "Taylor Swift", "Diego"],
-            ["What was Trivialize first called as?, 4, "TriviaDiego", "Trivia Time!", "Quiz Time!", "QuizSlide"],
+            ["What was Trivialize first called as?", 4, "TriviaDiego", "Trivia Time!", "Quiz Time!", "QuizSlide"],
             ["[TRUE or FALSE]\nThis is Diego's first time coding in HTML.", 1, "True", "False"],
             ["Taylor Swift's birthday is on November 13, 1989.", 2, "Correct", "Incorrect"]
 }
