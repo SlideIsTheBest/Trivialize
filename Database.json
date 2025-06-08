@@ -9,13 +9,23 @@
             ["Question 4?", 1, "True", "False", "I don't know"]
     ]},
 
-    "000001":{
+    "SLIDE0":{
         "quickmode":true,
         "shuffle":true,
         "questions":[
             ["What programming language does Trivialize use?", 4,"HTML", "CSS", "JavaScript", "All of them"],
             ["Who created Trivialize?", 4, "Afif", "Berk", "Lam", "Slide", "Zack"],
             ["What was Trivialize first called as?", 2, "TriviaSlide", "QuizSlide", "QuizTime!", "Triviable"],
-            ["(True or False)\nSlide's birthday is on March 14th.", 2, "True", "False"]
-    ]}
+            ["[TRUE or FALSE]\nSlide's birthday is on March 14th.", 2, "True", "False"]
+    ]},
+
+    "DIEGO0":{
+        "quickmode":false,
+        "shuffle":false,
+        "questions":[
+            ["What programming language does Trivialize (this website) use?", 4,"HTML", "CSS", "JavaScript", "All of them"],
+            ["Who made Trivialize?", 3, "AI", "Taylor Swift", "Diego"],
+            ["What was Trivialize first called as?, 4, "TriviaDiego", "Trivia Time!", "Quiz Time!", "QuizSlide"],
+            ["[TRUE or FALSE]\nThis is Diego's first time coding in HTML.", 1, "True", "False"],
+            ["Taylor Swift's birthday is on November 13, 1989.", 2, "Correct", "Incorrect"]
 }
